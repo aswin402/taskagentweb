@@ -15,14 +15,14 @@ import { useEffect } from 'react';
 const schema = z.object({
   title: z.string().min(3, 'Title must be at least 3 characters'),
   description: z.string().optional().nullable(),
-  category: z.enum([TASK_CATEGORIES.DYNAMIC, TASK_CATEGORIES.STABLE, TASK_CATEGORIES.SCHEDULED]),
-  priority: z.enum([PRIORITIES.LOW, PRIORITIES.MEDIUM, PRIORITIES.HIGH, PRIORITIES.URGENT]),
+  category: z.string(),
+  priority: z.string(),
   assigned_to: z.string().nullable().or(z.literal('all')),
-  scheduled_at: z.string().optional().or(z.literal('')),
-  due_date: z.string().optional().or(z.literal('')),
+  scheduled_at: z.string().optional().nullable(),
+  due_date: z.string().optional().nullable(),
   is_recurring: z.boolean().default(false),
-  recurrence_pattern: z.string().optional().or(z.literal('')),
-  status: z.enum([TASK_STATUSES.ACTIVE, TASK_STATUSES.COMPLETED, TASK_STATUSES.CANCELLED, TASK_STATUSES.ROLLED_OVER]).default(TASK_STATUSES.ACTIVE),
+  recurrence_pattern: z.string().optional().nullable(),
+  status: z.string().default(TASK_STATUSES.ACTIVE),
 });
 
 interface TaskFormProps {
@@ -64,6 +64,12 @@ export function TaskForm({ employees, defaultValues, onSubmit, isSubmitting }: T
     register('assigned_to');
     register('status');
   }, [register]);
+
+  useEffect(() => {
+    if (Object.keys(errors).length > 0) {
+      console.log('TaskForm Validation Errors:', errors);
+    }
+  }, [errors]);
 
   const handleFormSubmit = (data: any) => {
     const taskData: any = {
@@ -108,7 +114,7 @@ export function TaskForm({ employees, defaultValues, onSubmit, isSubmitting }: T
           <Label htmlFor="category">Category</Label>
           <Select
             defaultValue={watch('category')}
-            onValueChange={(val) => setValue('category', val as any)}
+            onValueChange={(val) => setValue('category', val as any, { shouldValidate: true, shouldDirty: true })}
             disabled={isSubmitting}
           >
             <SelectTrigger>
@@ -120,13 +126,14 @@ export function TaskForm({ employees, defaultValues, onSubmit, isSubmitting }: T
               <SelectItem value={TASK_CATEGORIES.SCHEDULED}>Scheduled Task</SelectItem>
             </SelectContent>
           </Select>
+          {errors.category && <p className="text-xs text-destructive">{errors.category.message as string}</p>}
         </div>
 
         <div className="space-y-2">
           <Label htmlFor="priority">Priority</Label>
           <Select
             defaultValue={watch('priority')}
-            onValueChange={(val) => setValue('priority', val as any)}
+            onValueChange={(val) => setValue('priority', val as any, { shouldValidate: true, shouldDirty: true })}
             disabled={isSubmitting}
           >
             <SelectTrigger>
@@ -139,6 +146,7 @@ export function TaskForm({ employees, defaultValues, onSubmit, isSubmitting }: T
               <SelectItem value={PRIORITIES.URGENT}>Urgent</SelectItem>
             </SelectContent>
           </Select>
+          {errors.priority && <p className="text-xs text-destructive">{errors.priority.message as string}</p>}
         </div>
       </div>
 
@@ -147,7 +155,7 @@ export function TaskForm({ employees, defaultValues, onSubmit, isSubmitting }: T
           <Label htmlFor="assigned_to">Assignee</Label>
           <Select
             defaultValue={watch('assigned_to') || 'all'}
-            onValueChange={(val) => setValue('assigned_to', val)}
+            onValueChange={(val) => setValue('assigned_to', val, { shouldValidate: true, shouldDirty: true })}
             disabled={isSubmitting}
           >
             <SelectTrigger>
@@ -162,13 +170,14 @@ export function TaskForm({ employees, defaultValues, onSubmit, isSubmitting }: T
               ))}
             </SelectContent>
           </Select>
+          {errors.assigned_to && <p className="text-xs text-destructive">{errors.assigned_to.message as string}</p>}
         </div>
 
         <div className="space-y-2">
           <Label htmlFor="status">Status</Label>
           <Select
             defaultValue={watch('status')}
-            onValueChange={(val) => setValue('status', val as any)}
+            onValueChange={(val) => setValue('status', val as any, { shouldValidate: true, shouldDirty: true })}
             disabled={isSubmitting}
           >
             <SelectTrigger>
@@ -181,6 +190,7 @@ export function TaskForm({ employees, defaultValues, onSubmit, isSubmitting }: T
               <SelectItem value={TASK_STATUSES.ROLLED_OVER}>Rolled Over</SelectItem>
             </SelectContent>
           </Select>
+          {errors.status && <p className="text-xs text-destructive">{errors.status.message as string}</p>}
         </div>
       </div>
 
