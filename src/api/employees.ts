@@ -3,7 +3,7 @@ import type { Database } from '@/types/database';
 
 export type Profile = Database['public']['Tables']['profiles']['Row'];
 
-export async function getEmployees() {
+export async function getEmployees(): Promise<Profile[]> {
   const { data, error } = await supabase
     .from('profiles')
     .select('*')
@@ -11,7 +11,7 @@ export async function getEmployees() {
     .order('full_name', { ascending: true });
 
   if (error) throw error;
-  return data;
+  return (data || []) as Profile[];
 }
 
 export async function createEmployee(email: string, pass: string, name: string) {

@@ -13,6 +13,8 @@ import LoginPage from '@/pages/auth/LoginPage';
 import DashboardPage from '@/pages/admin/DashboardPage';
 import EmployeesPage from '@/pages/admin/EmployeesPage';
 import TasksPage from '@/pages/admin/TasksPage';
+import ReportsPage from '@/pages/admin/ReportsPage';
+import SettingsPage from '@/pages/admin/SettingsPage';
 import ChecklistPage from '@/pages/employee/ChecklistPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 
@@ -80,6 +82,14 @@ const router = createBrowserRouter([
       {
         path: 'tasks',
         element: <TasksPage />,
+      },
+      {
+        path: 'reports',
+        element: <ReportsPage />,
+      },
+      {
+        path: 'settings',
+        element: <SettingsPage />,
       },
       {
         path: '',
