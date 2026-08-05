@@ -11,6 +11,7 @@ import EmployeeLayout from '@/layouts/EmployeeLayout';
 // Pages
 import LoginPage from '@/pages/auth/LoginPage';
 import DashboardPage from '@/pages/admin/DashboardPage';
+import EmployeesPage from '@/pages/admin/EmployeesPage';
 import ChecklistPage from '@/pages/employee/ChecklistPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 
@@ -70,6 +71,10 @@ const router = createBrowserRouter([
       {
         path: 'dashboard',
         element: <DashboardPage />,
+      },
+      {
+        path: 'employees',
+        element: <EmployeesPage />,
       },
       {
         path: '',

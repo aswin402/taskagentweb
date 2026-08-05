@@ -235,7 +235,14 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      admin_create_employee: {
+        Args: {
+          email: string
+          password: string
+          full_name: string
+        }
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never
