@@ -12,6 +12,8 @@ import { type Profile } from '@/api/employees';
 import { Loader2 } from 'lucide-react';
 import { useEffect } from 'react';
 
+import { toast } from 'sonner';
+
 const schema = z.object({
   title: z.string().min(3, 'Title must be at least 3 characters'),
   description: z.string().optional().nullable(),
@@ -96,8 +98,18 @@ export function TaskForm({ employees, defaultValues, onSubmit, isSubmitting }: T
     return onSubmit(taskData);
   };
 
+  const handleFormError = (formErrors: any) => {
+    console.log('TaskForm validation failed:', formErrors);
+    const firstError = Object.values(formErrors)[0] as any;
+    if (firstError?.message) {
+      toast.warning(firstError.message);
+    } else {
+      toast.warning('Please check the highlighted form errors.');
+    }
+  };
+
   return (
-    <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4 max-h-[70vh] overflow-y-auto px-1">
+    <form onSubmit={handleSubmit(handleFormSubmit, handleFormError)} className="space-y-4 max-h-[70vh] overflow-y-auto px-1">
       <div className="space-y-2">
         <Label htmlFor="title">Task Title</Label>
         <Input id="title" placeholder="e.g. Publish social feed post" {...register('title')} disabled={isSubmitting} />

@@ -17,6 +17,7 @@ import ReportsPage from '@/pages/admin/ReportsPage';
 import SettingsPage from '@/pages/admin/SettingsPage';
 import ChecklistPage from '@/pages/employee/ChecklistPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
+import { Toaster } from '@/components/ui/sonner';
 
 import './App.css';
 
@@ -125,6 +126,7 @@ function App() {
   return (
     <AuthProvider>
       <RouterProvider router={router} />
+      <Toaster position="top-right" closeButton richColors />
     </AuthProvider>
   );
 }
