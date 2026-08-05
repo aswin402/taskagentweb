@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getEmployees, createEmployee, updateEmployee, deactivateEmployee, type Profile } from '@/api/employees';
+import { getEmployees, createEmployee, updateEmployee, deactivateEmployee, deleteEmployee, type Profile } from '@/api/employees';
 
 export function useEmployees() {
   const queryClient = useQueryClient();
@@ -33,6 +33,13 @@ export function useEmployees() {
     },
   });
 
+  const deleteMutation = useMutation({
+    mutationFn: (id: string) => deleteEmployee(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['employees'] });
+    },
+  });
+
   return {
     employees: employeesQuery.data || [],
     isLoading: employeesQuery.isLoading,
@@ -43,6 +50,8 @@ export function useEmployees() {
     isUpdating: updateMutation.isPending,
     deactivateEmployee: deactivateMutation.mutateAsync,
     isDeactivating: deactivateMutation.isPending,
+    deleteEmployee: deleteMutation.mutateAsync,
+    isDeleting: deleteMutation.isPending,
   };
 }
 

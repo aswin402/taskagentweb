@@ -55,6 +55,22 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
+-- RPC to delete an employee (removes from auth.users, cascades to profiles)
+CREATE OR REPLACE FUNCTION public.admin_delete_employee(target_user_id UUID)
+RETURNS VOID AS $$
+BEGIN
+  -- Verify calling user is active admin
+  IF NOT EXISTS (
+    SELECT 1 FROM public.profiles
+    WHERE id = auth.uid() AND role = 'admin' AND is_active = true
+  ) THEN
+    RAISE EXCEPTION 'Access Denied: Only active admins can remove employees.';
+  END IF;
+
+  DELETE FROM auth.users WHERE id = target_user_id;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
 -- 5. Row Level Security Policies
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.tasks ENABLE ROW LEVEL SECURITY;

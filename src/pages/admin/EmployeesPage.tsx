@@ -7,6 +7,8 @@ import { Plus, Loader2 } from 'lucide-react';
 import { type Profile } from '@/api/employees';
 import { toast } from 'sonner';
 
+import ConfirmDialog from '@/components/shared/ConfirmDialog';
+
 export function EmployeesPage() {
   const {
     employees,
@@ -15,12 +17,16 @@ export function EmployeesPage() {
     createEmployee,
     updateEmployee,
     deactivateEmployee,
+    deleteEmployee,
     isCreating,
     isUpdating,
   } = useEmployees();
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState<Profile | null>(null);
+
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
 
   const handleEdit = (employee: Profile) => {
     setSelectedEmployee(employee);
@@ -48,6 +54,22 @@ export function EmployeesPage() {
     } catch (err: any) {
       toast.error(err?.message || 'Failed to activate employee');
     }
+  };
+
+  const handleDeleteClick = (id: string) => {
+    setDeleteTargetId(id);
+    setConfirmOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!deleteTargetId) return;
+    try {
+      await deleteEmployee(deleteTargetId);
+      toast.success('Employee removed successfully');
+    } catch (err: any) {
+      toast.error(err?.message || 'Failed to remove employee');
+    }
+    setDeleteTargetId(null);
   };
 
   if (isLoading) {
@@ -87,6 +109,7 @@ export function EmployeesPage() {
         onEdit={handleEdit}
         onDeactivate={handleDeactivate}
         onActivate={handleActivate}
+        onDelete={handleDeleteClick}
       />
 
       <EmployeeDialog
@@ -97,6 +120,17 @@ export function EmployeesPage() {
         updateEmployee={updateEmployee}
         isCreating={isCreating}
         isUpdating={isUpdating}
+      />
+
+      <ConfirmDialog
+        isOpen={confirmOpen}
+        onClose={() => setConfirmOpen(false)}
+        onConfirm={handleConfirmDelete}
+        title="Remove Employee"
+        description="Are you sure you want to remove this employee? This will permanently delete their account and task assignments."
+        confirmText="Remove"
+        cancelText="Cancel"
+        variant="destructive"
       />
     </div>
   );

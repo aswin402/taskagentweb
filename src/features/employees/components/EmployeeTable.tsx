@@ -1,7 +1,7 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Edit, UserX, UserCheck, MoreHorizontal, User } from 'lucide-react';
+import { Edit, UserX, UserCheck, MoreHorizontal, User, Trash2 } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,9 +18,10 @@ interface EmployeeTableProps {
   onEdit: (employee: Profile) => void;
   onDeactivate: (id: string) => void;
   onActivate: (id: string) => void;
+  onDelete: (id: string) => void;
 }
 
-export function EmployeeTable({ employees, onEdit, onDeactivate, onActivate }: EmployeeTableProps) {
+export function EmployeeTable({ employees, onEdit, onDeactivate, onActivate, onDelete }: EmployeeTableProps) {
   const getInitials = (name: string) => {
     return name
       .split(' ')
@@ -96,7 +97,7 @@ export function EmployeeTable({ employees, onEdit, onDeactivate, onActivate }: E
                     {employee.is_active ? (
                       <DropdownMenuItem
                         onClick={() => onDeactivate(employee.id)}
-                        className="text-destructive focus:bg-destructive/10 focus:text-destructive cursor-pointer"
+                        className="text-amber-600 focus:bg-amber-500/10 focus:text-amber-600 cursor-pointer"
                       >
                         <UserX className="mr-2 h-4 w-4" />
                         Deactivate
@@ -110,6 +111,14 @@ export function EmployeeTable({ employees, onEdit, onDeactivate, onActivate }: E
                         Activate
                       </DropdownMenuItem>
                     )}
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      onClick={() => onDelete(employee.id)}
+                      className="text-destructive focus:bg-destructive/10 focus:text-destructive cursor-pointer"
+                    >
+                      <Trash2 className="mr-2 h-4 w-4" />
+                      Remove Employee
+                    </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </TableCell>

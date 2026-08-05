@@ -39,3 +39,14 @@ export async function updateEmployee(id: string, updates: Partial<Profile>) {
 export async function deactivateEmployee(id: string) {
   return updateEmployee(id, { is_active: false });
 }
+
+export async function deleteEmployee(id: string) {
+  const { error } = await (supabase as any).rpc('admin_delete_employee', {
+    target_user_id: id,
+  });
+  if (error) {
+    // Fallback: delete from profiles table directly if RPC is not created yet
+    const { error: profileError } = await supabase.from('profiles').delete().eq('id', id);
+    if (profileError) throw profileError;
+  }
+}
