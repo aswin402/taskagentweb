@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Geist:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-background: oklch(var(--background));
+  --color-foreground: oklch(var(--foreground));
+
+  --color-primary: oklch(var(--primary));
+  --color-primary-foreground: oklch(var(--primary-foreground));
+
+  --color-secondary: oklch(var(--secondary));
+  --color-secondary-foreground: oklch(var(--secondary-foreground));
+
+  --color-muted: oklch(var(--muted));
+  --color-muted-foreground: oklch(var(--muted-foreground));
+
+  --color-accent: oklch(var(--accent));
+  --color-accent-foreground: oklch(var(--accent-foreground));
+
+  --color-destructive: oklch(var(--destructive));
+  --color-destructive-foreground: oklch(var(--destructive-foreground));
+
+  --color-border: oklch(var(--border));
+  --color-input: oklch(var(--input));
+  --color-ring: oklch(var(--ring));
+
+  --radius-lg: 0.5rem;
+  --radius-md: calc(0.5rem - 2px);
+  --radius-sm: calc(0.5rem - 4px);
+
+  --font-heading: 'Manrope', sans-serif;
+  --font-body: 'Geist', sans-serif;
+}
+
+@layer base {
+  :root {
+    --background: 1 0 0;
+    --foreground: 0.141 0.005 285.823;
+    --primary: 0.59 0.201 273.444;
+    --primary-foreground: 1 0 0;
+    --secondary: 0.949 0.029 303.081;
+    --secondary-foreground: 0.21 0.006 285.885;
+    --muted: 0.963 0.023 308.198;
+    --muted-foreground: 0.472 0.002 286.339;
+    --accent: 0.949 0.029 303.081;
+    --accent-foreground: 0.211 0.006 285.885;
+    --destructive: 0.637 0.208 25.331;
+    --destructive-foreground: 0.985 0 0;
+    --border: 0.92 0.02 285; /* Adjusted for better visibility */
+    --input: 0.92 0.02 285;
+    --ring: 0.59 0.201 273.444;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 0.141 0.005 285.823;
+    --foreground: 0.985 0 0;
+    --primary: 0.665 0.179 278.961;
+    --primary-foreground: 1 0 0;
+    --secondary: 0.202 0.107 263.462;
+    --secondary-foreground: 0.985 0 0;
+    --muted: 0.167 0.112 264.144;
+    --muted-foreground: 0.673 0 0;
+    --accent: 0.202 0.107 263.462;
+    --accent-foreground: 0.985 0 0;
+    --destructive: 0.396 0.133 25.723;
+    --destructive-foreground: 0.985 0 0;
+    --border: 0.25 0.05 264; /* Adjusted for dark mode */
+    --input: 0.25 0.05 264;
+    --ring: 0.665 0.179 278.961;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-body;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading font-bold;
+  }
+}
+
