@@ -1,132 +1,90 @@
-# Onpkg Vite+React Template 🚀
+# TaskAgent 📋🛡️
 
-A premium, highly-opinionated Vite + React starter template designed for scalability, type-safety, and modern developer experience.
+A modern, fast, and responsive **Task Management and Operational Accountability Dashboard** built using React, Vite, Tailwind CSS v4, and Supabase. Tailored for admins (managers & AI agents) to assign, track, and monitor daily employee tasks, stable works, and scheduled appointments, and for workers to log their progress with enforced accountability reasons for unfinished tasks.
+
+---
+
+## 🎨 Immersive Previews & Design
+* **Role-Based Workspaces**: Automatic redirects to either the Manager Dashboard or the Employee Checklist interface.
+* **Responsive Layouts**: Fully responsive interface tailored for Desktop, Tablet, and Mobile viewport grids.
+* **Premium Theme Control**: Dynamic, smooth Light & Dark mode theme toggles built with Tailwind CSS variables and OKLCH color spaces.
+* **Toast System**: Interactive top-right corner alert system tracking validation warnings, system successes, and error feedback.
+
+---
 
 ## ✨ Features
 
-- **Next.js-like Architecture**: Structured layouts, pages, and routing.
-- **Tailwind CSS v4**: Modern styling with CSS variables and OKLCH color spaces.
-- **Zustand State Management**: Persistent global stores for theme and application state.
-- **Type-Safe API & Validation**: Axios integration with Zod schemas and React Query (TanStack).
-- **Premium UI Components**: Custom-built, accessible components inspired by Shadcn UI.
-- **Enhanced Logging**: Structured, group-collapsed console output for a cleaner dev experience.
+### 👑 Manager & AI Portal (Admin)
+* **Real-time Analytics**: High-level statistics on task completion ratios, active workforce, and live checklist progress logs.
+* **Task Management (CRUD)**: Easily create, update, filter, and delete tasks categorized under *Daily Tasks*, *Stable Works*, or *Scheduled Appointments*.
+* **Employee Directory (CRUD)**: Manage your team roster, edit detail cards, and toggle worker activation status.
+* **Interactive CSV Reports**: Filter historical submissions by employees, dates, or task categories, and export audit trails instantly.
+* **System Settings**: Trigger manual task rollovers and adjust global rules.
+
+### 👷 Worker Workspace (Employee)
+* **Personalized Checklist**: Clean list showing assigned tasks, schedules, and stable works.
+* **Accountability Enforcement**: Toggling a task to *unfinished* prompts a reasons dialog, requiring the worker to record the delay context before submitting.
+* **Automated Reset**: Synced checklist resets based on manager rollover actions.
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **Framework**: [React 19](https://react.dev/)
-- **Bundler**: [Vite 8](https://vite.dev/)
-- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
-- **Router**: [React Router 7](https://reactrouter.com/)
-- **State**: [Zustand](https://docs.pmnd.rs/zustand)
-- **Data Fetching**: [TanStack Query v5](https://tanstack.com/query)
-- **Validation**: [Zod](https://zod.dev/)
-- **Forms**: [React Hook Form](https://react-hook-form.com/)
-- **Icons**: [Lucide React](https://lucide.dev/)
+* **Frontend Framework**: [React 19](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
+* **Build System**: [Vite 8](https://vite.dev/)
+* **CSS & Design**: [Tailwind CSS v4](https://tailwindcss.com/) + Custom Shadcn UI foundations
+* **State Management**: [Zustand](https://docs.pmnd.rs/zustand)
+* **Data Fetching**: [TanStack Query v5](https://tanstack.com/query)
+* **Form Validation**: [React Hook Form](https://react-hook-form.com/) + [Zod](https://zod.dev/)
+* **Database & Auth**: [Supabase](https://supabase.com/) (Serverless Postgres)
 
 ---
 
 ## 🚀 Getting Started
 
-### 1. Installation
+### 1. Requirements
+Ensure you have [Bun](https://bun.sh/) installed:
+```bash
+curl -fsSL https://bun.sh/install | bash
+```
 
+### 2. Environment Setup
+Create a `.env.local` file in the root directory and add your Supabase credentials:
+```env
+VITE_SUPABASE_URL=your_supabase_project_url
+VITE_SUPABASE_ANON_KEY=your_supabase_publishable_key
+```
+
+### 3. Local Installation
+Clone the project and install local dependencies:
 ```bash
 bun install
 ```
 
-### 2. Development
+### 4. Database Setup
+Execute the SQL migrations found under the `docs/db.sql` schema folder in your **Supabase SQL Editor** to bootstrap your tables, functions, triggers, and Row Level Security policies.
 
+### 5. Running the Application
+Start the local development server:
 ```bash
 bun run dev
 ```
 
-### 3. Build
-
-```bash
-bun run build
-```
-
 ---
 
-## 🎨 Theme Setup & Modification
-
-### Theme Store
-The theme state is managed by Zustand in `src/store/useThemeStore.ts`. It supports `light`, `dark`, and `system` modes with automatic persistence to `localStorage`.
-
-### Theme Provider
-Wrap your application (or specific sections) with `<ThemeProvider />` from `src/components/ThemeProvider.tsx`.
-
-### Customizing Colors
-Modify the CSS variables in `src/index.css` within the `@theme` block. We use OKLCH for better color perception.
-
-```css
-@theme {
-  --color-primary: oklch(0.59 0.201 273.444);
-  --color-background: oklch(1 0 0);
-  /* ... */
-}
-```
-
----
-
-## 📦 Package Usage Guides
-
-### 🌐 API (Axios + React Query)
-API calls are centralized in `src/api/axios.ts`. Use React Query for data fetching:
-
-```tsx
-const { data, isLoading } = useQuery({
-  queryKey: ['users'],
-  queryFn: () => axiosInstance.get('/users').then(res => res.data),
-});
-```
-
-### 🛡️ Validation (Zod)
-Define your data shapes in `src/types/schema.ts`:
-
-```typescript
-const UserSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-});
-```
-
-### 📝 Forms (React Hook Form)
-Integrated with `@hookform/resolvers` for Zod support:
-
-```tsx
-const form = useForm({
-  resolver: zodResolver(UserSchema),
-});
-```
-
-### 📦 State (Zustand)
-Create stores in `src/store/`:
-
-```typescript
-export const useAuthStore = create((set) => ({
-  user: null,
-  login: (user) => set({ user }),
-}));
-```
-
----
-
-## 📂 Project Structure
+## 📂 Architecture
 
 ```text
 src/
-├── api/          # Axios instance and API calls
-├── assets/       # Static assets (images, svgs)
-├── components/   # Reusable UI components
-├── hooks/        # Custom React hooks
-├── layouts/      # Page layouts (e.g., RootLayout)
-├── lib/          # Utilities (logger, etc.)
-├── pages/        # Route-level components
-├── providers/    # Context/Query providers
-├── store/        # Zustand stores
-└── types/        # Zod schemas and TS types
+├── api/             # Supabase clients and table queries
+├── components/      # Common UI primitives (forms, buttons, inputs)
+├── features/        # Feature domains (auth, employees, submissions, tasks)
+├── layouts/         # Page shells (AdminLayout, EmployeeLayout, AuthLayout)
+├── lib/             # Utility logs and constants
+├── pages/           # Route viewport pages (Dashboard, Reports, checklist)
+├── providers/       # Global context wrapper states (AuthProvider)
+├── store/           # Zustand global state (theme toggles)
+└── types/           # Type definitions and database structures
 ```
 
 ---
