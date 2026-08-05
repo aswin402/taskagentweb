@@ -10,6 +10,8 @@ import { Plus, Loader2 } from 'lucide-react';
 import { type Task } from '@/api/tasks';
 import { toast } from 'sonner';
 
+import ConfirmDialog from '@/components/shared/ConfirmDialog';
+
 export function TasksPage() {
   const { tasks, isLoading: isTasksLoading, error: tasksError, filters, setFilters } = useTasks();
   const { createTask, updateTask, deleteTask, isCreating, isUpdating } = useTaskMutations();
@@ -17,6 +19,9 @@ export function TasksPage() {
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
 
   const handleEdit = (task: Task) => {
     setSelectedTask(task);
@@ -28,15 +33,20 @@ export function TasksPage() {
     setDialogOpen(true);
   };
 
-  const handleDelete = async (id: string) => {
-    if (confirm('Are you sure you want to delete this task?')) {
-      try {
-        await deleteTask(id);
-        toast.success('Task deleted successfully');
-      } catch (err: any) {
-        toast.error(err?.message || 'Failed to delete task');
-      }
+  const handleDeleteClick = (id: string) => {
+    setDeleteTargetId(id);
+    setConfirmOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!deleteTargetId) return;
+    try {
+      await deleteTask(deleteTargetId);
+      toast.success('Task deleted successfully');
+    } catch (err: any) {
+      toast.error(err?.message || 'Failed to delete task');
     }
+    setDeleteTargetId(null);
   };
 
   const isLoading = isTasksLoading || isEmployeesLoading;
@@ -82,7 +92,7 @@ export function TasksPage() {
       <TaskList
         tasks={tasks}
         onEdit={handleEdit}
-        onDelete={handleDelete}
+        onDelete={handleDeleteClick}
       />
 
       <TaskDialog
@@ -94,6 +104,17 @@ export function TasksPage() {
         updateTask={updateTask}
         isCreating={isCreating}
         isUpdating={isUpdating}
+      />
+
+      <ConfirmDialog
+        isOpen={confirmOpen}
+        onClose={() => setConfirmOpen(false)}
+        onConfirm={handleConfirmDelete}
+        title="Delete Task"
+        description="Are you sure you want to delete this task? This action is permanent."
+        confirmText="Delete"
+        cancelText="Cancel"
+        variant="destructive"
       />
     </div>
   );
