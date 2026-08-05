@@ -18,6 +18,7 @@ import SettingsPage from '@/pages/admin/SettingsPage';
 import ChecklistPage from '@/pages/employee/ChecklistPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 import { Toaster } from '@/components/ui/sonner';
+import { ThemeProvider } from '@/components/ThemeProvider';
 
 import './App.css';
 
@@ -124,10 +125,12 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <AuthProvider>
-      <RouterProvider router={router} />
-      <Toaster position="top-right" closeButton richColors />
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <RouterProvider router={router} />
+        <Toaster position="top-right" closeButton richColors />
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 
