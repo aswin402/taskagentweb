@@ -9,7 +9,7 @@
 | Phase / Module | Status | Total Items | Completed | Progress |
 | :--- | :---: | :---: | :---: | :---: |
 | **Phase 1: Foundation & Setup** | 🟢 Completed | 10 | 10 | `[██████████]` 100% |
-| **Phase 2: Authentication** | ⚪ Not Started | 11 | 0 | `[░░░░░░░░░░]` 0% |
+| **Phase 2: Authentication** | 🟢 Completed | 11 | 11 | `[██████████]` 100% |
 | **Phase 3: Admin Layout & Navigation** | ⚪ Not Started | 8 | 0 | `[░░░░░░░░░░]` 0% |
 | **Phase 4: Employee Management** | ⚪ Not Started | 9 | 0 | `[░░░░░░░░░░]` 0% |
 | **Phase 5: Task Management** | ⚪ Not Started | 16 | 0 | `[░░░░░░░░░░]` 0% |
@@ -18,7 +18,7 @@
 | **Phase 8: Polish & QA** | ⚪ Not Started | 11 | 0 | `[░░░░░░░░░░]` 0% |
 | **Supabase Setup** | ⚪ Not Started | 13 | 0 | `[░░░░░░░░░░]` 0% |
 | **AI Agent Integration** | ⚪ Not Started | 6 | 0 | `[░░░░░░░░░░]` 0% |
-| **TOTAL** | **🟡 In Progress** | **109** | **10** | **`[█░░░░░░░░░]` 9%** |
+| **TOTAL** | **🟡 In Progress** | **109** | **21** | **`[██░░░░░░░░]` 19%** |
 
 ---
 
@@ -51,27 +51,27 @@
 ---
 
 ### Phase 2: Authentication
-- [ ] **Create src/api/auth.ts**
+- [x] **Create src/api/auth.ts**
   - Implement Supabase Auth methods: `signInWithPassword`, `signOut`, `getSession`, `getCurrentUser`, and `onAuthStateChange`.
-- [ ] **Create useAuthStore (Zustand)**
+- [x] **Create useAuthStore (Zustand)**
   - Build persistent Zustand store for session state, active user profile, user role, and loading state.
-- [ ] **Create useAuth hook**
+- [x] **Create useAuth hook**
   - React hook exposing `login`, `logout`, `user`, `role`, `isAdmin`, `isEmployee`, and state revalidation helpers.
-- [ ] **Create ProtectedRoute component**
+- [x] **Create ProtectedRoute component**
   - Route wrapper verifying authentication and role authorization (`requiredRole`), redirecting unauthenticated users to `/login`.
-- [ ] **Create AuthProvider**
+- [x] **Create AuthProvider**
   - Top-level context listener that initializes Supabase auth session on mount and handles token refresh events.
-- [ ] **Create LoginForm with Zod validation**
+- [x] **Create LoginForm with Zod validation**
   - Build validated form using `react-hook-form` and `zod` for email/password validation with error feedback.
-- [ ] **Create LoginPage**
+- [x] **Create LoginPage**
   - Render login interface with responsive design, brand logo, and authentication form container.
-- [ ] **Create AuthLayout**
+- [x] **Create AuthLayout**
   - Centered visual layout container dedicated to authentication views.
-- [ ] **Update App.tsx with React Router routes**
+- [x] **Update App.tsx with React Router routes**
   - Map routes: `/login` (public), `/admin/*` (admin protected), `/app/*` (employee protected), and default redirects.
-- [ ] **Test login flow**
+- [x] **Test login flow**
   - Verify credentials submission, session creation, token storage, and invalid login handling.
-- [ ] **Test role-based redirect**
+- [x] **Test role-based redirect**
   - Verify automatic routing to `/admin/dashboard` for admins and `/app/checklist` for employees upon sign in.
 
 ---
