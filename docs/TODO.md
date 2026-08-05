@@ -11,14 +11,14 @@
 | **Phase 1: Foundation & Setup** | 🟢 Completed | 10 | 10 | `[██████████]` 100% |
 | **Phase 2: Authentication** | 🟢 Completed | 11 | 11 | `[██████████]` 100% |
 | **Phase 3: Admin Layout & Navigation** | 🟢 Completed | 8 | 8 | `[██████████]` 100% |
-| **Phase 4: Employee Management** | ⚪ Not Started | 9 | 0 | `[░░░░░░░░░░]` 0% |
+| **Phase 4: Employee Management** | 🟢 Completed | 9 | 9 | `[██████████]` 100% |
 | **Phase 5: Task Management** | ⚪ Not Started | 16 | 0 | `[░░░░░░░░░░]` 0% |
 | **Phase 6: Employee Checklist** | ⚪ Not Started | 13 | 0 | `[░░░░░░░░░░]` 0% |
 | **Phase 7: Dashboard & Reports** | ⚪ Not Started | 12 | 0 | `[░░░░░░░░░░]` 0% |
 | **Phase 8: Polish & QA** | ⚪ Not Started | 11 | 0 | `[░░░░░░░░░░]` 0% |
 | **Supabase Setup** | ⚪ Not Started | 13 | 0 | `[░░░░░░░░░░]` 0% |
 | **AI Agent Integration** | ⚪ Not Started | 6 | 0 | `[░░░░░░░░░░]` 0% |
-| **TOTAL** | **🟡 In Progress** | **109** | **29** | **`[███░░░░░░░]` 26%** |
+| **TOTAL** | **🟡 In Progress** | **109** | **38** | **`[████░░░░░░]` 34%** |
 
 ---
 
@@ -97,23 +97,23 @@
 ---
 
 ### Phase 4: Employee Management
-- [ ] **Create src/api/employees.ts**
+- [x] **Create src/api/employees.ts**
   - API service layer for employee CRUD: `getEmployees`, `createEmployee`, `updateEmployee`, and `toggleEmployeeStatus`.
-- [ ] **Create useEmployees hook**
+- [x] **Create useEmployees hook**
   - TanStack Query hooks (`useEmployeesQuery`, `useEmployeeMutations`) with query caching and invalidation logic.
-- [ ] **Create EmployeeTable component**
+- [x] **Create EmployeeTable component**
   - Interactive data table rendering list of employees, status indicators (`active`/`inactive`), role, department, and action actions.
-- [ ] **Create EmployeeDialog (create/edit)**
+- [x] **Create EmployeeDialog (create/edit)**
   - Modal component housing user creation and editing forms.
-- [ ] **Create EmployeeForm with validation**
+- [x] **Create EmployeeForm with validation**
   - Zod-schema validated form capturing full name, email, role, department, phone number, and status.
-- [ ] **Create EmployeesPage**
+- [x] **Create EmployeesPage**
   - Full admin management page integrating search filters, department dropdowns, employee table, and modal triggers.
-- [ ] **Test create employee**
+- [x] **Test create employee**
   - Verify adding a new employee generates profile entry in Supabase and triggers auth invitation/provisioning.
-- [ ] **Test edit employee**
+- [x] **Test edit employee**
   - Verify updating employee metadata updates database records and refreshes table state instantly.
-- [ ] **Test deactivate employee**
+- [x] **Test deactivate employee**
   - Verify setting status to inactive blocks user authentication while preserving historical task records.
 
 ---
