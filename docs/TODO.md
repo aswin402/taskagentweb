@@ -13,12 +13,12 @@
 | **Phase 3: Admin Layout & Navigation** | 🟢 Completed | 8 | 8 | `[██████████]` 100% |
 | **Phase 4: Employee Management** | 🟢 Completed | 9 | 9 | `[██████████]` 100% |
 | **Phase 5: Task Management** | 🟢 Completed | 16 | 16 | `[██████████]` 100% |
-| **Phase 6: Employee Checklist** | ⚪ Not Started | 13 | 0 | `[░░░░░░░░░░]` 0% |
+| **Phase 6: Employee Checklist** | 🟢 Completed | 13 | 13 | `[██████████]` 100% |
 | **Phase 7: Dashboard & Reports** | ⚪ Not Started | 12 | 0 | `[░░░░░░░░░░]` 0% |
 | **Phase 8: Polish & QA** | ⚪ Not Started | 11 | 0 | `[░░░░░░░░░░]` 0% |
 | **Supabase Setup** | ⚪ Not Started | 13 | 0 | `[░░░░░░░░░░]` 0% |
 | **AI Agent Integration** | ⚪ Not Started | 6 | 0 | `[░░░░░░░░░░]` 0% |
-| **TOTAL** | **🟡 In Progress** | **109** | **54** | **`[█████░░░░░]` 49%** |
+| **TOTAL** | **🟡 In Progress** | **109** | **67** | **`[██████░░░░]` 61%** |
 
 ---
 
@@ -155,31 +155,31 @@
 ---
 
 ### Phase 6: Employee Checklist
-- [ ] **Create EmployeeLayout**
+- [x] **Create EmployeeLayout**
   - Streamlined, mobile-optimized header and content wrapper tailored for employee daily checklist workflows.
-- [ ] **Create src/api/submissions.ts**
+- [x] **Create src/api/submissions.ts**
   - API handlers for `fetchTodayChecklist`, `toggleTaskItem`, `saveReason`, and `submitDailyReport`.
-- [ ] **Create useSubmissions hook**
+- [x] **Create useSubmissions hook**
   - TanStack Query hooks managing daily employee checklist data, local completion states, and report submission.
-- [ ] **Create ChecklistSection component**
+- [x] **Create ChecklistSection component**
   - Visual category container (`Dynamic Tasks`, `Stable Work`, `Scheduled Tasks`) displaying completion progress counters.
-- [ ] **Create ReasonDialog component**
+- [x] **Create ReasonDialog component**
   - Modal prompting the employee to provide a mandatory justification text when unchecking or omitting a task.
-- [ ] **Create SubmitButton component**
+- [x] **Create SubmitButton component**
   - Action button enabling daily checklist submission once all items are checked or justified with reasons.
-- [ ] **Create ChecklistItem component**
+- [x] **Create ChecklistItem component**
   - Interactive row item with checkbox, task details, status tag, deadline indicator, and reason button.
-- [ ] **Create EmptyState component**
+- [x] **Create EmptyState component**
   - Display component shown when an employee has no tasks assigned for the selected day.
-- [ ] **Create ChecklistPage**
+- [x] **Create ChecklistPage**
   - Main employee screen loading today's tasks, managing checkbox states, capturing non-completion reasons, and submitting the daily report.
-- [ ] **Test tick/untick tasks**
+- [x] **Test tick/untick tasks**
   - Verify toggling checkbox updates local checklist state and updates task completion progress metrics.
-- [ ] **Test reason required for unchecked**
+- [x] **Test reason required for unchecked**
   - Verify unchecking an item or leaving an item incomplete enforces entering a valid reason string before submission.
-- [ ] **Test submit daily report**
+- [x] **Test submit daily report**
   - Verify clicking submit records a complete snapshot entry in `task_submissions` with timestamps.
-- [ ] **Test task rollover display**
+- [x] **Test task rollover display**
   - Verify incomplete tasks from previous days automatically appear in today's checklist tagged with a `Rolled Over` badge.
 
 ---
