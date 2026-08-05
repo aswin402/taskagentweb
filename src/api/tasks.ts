@@ -8,7 +8,7 @@ export async function getTasks(filters?: {
   assignedTo?: string;
   status?: string;
 }) {
-  let query = supabase.from('tasks').select('*, assigned_to_profile:profiles(*)');
+  let query = supabase.from('tasks').select('*, assigned_to_profile:profiles!assigned_to(*)');
 
   if (filters) {
     if (filters.category && filters.category !== 'all') {
