@@ -21,7 +21,7 @@ export function AdminLayout() {
   };
 
   return (
-    <div className="flex min-h-screen bg-slate-50 dark:bg-slate-950 w-full">
+    <div className="flex min-h-screen bg-slate-50 dark:bg-background w-full">
       {/* Desktop Sidebar */}
       <Sidebar className="hidden md:flex w-64 shrink-0" />
 

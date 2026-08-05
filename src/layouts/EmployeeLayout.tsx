@@ -38,7 +38,7 @@ export function EmployeeLayout() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-slate-50 dark:bg-slate-950 w-full">
+    <div className="flex flex-col min-h-screen bg-slate-50 dark:bg-background w-full">
       {/* Top Header Navbar */}
       <header className="flex h-16 w-full items-center justify-between border-b border-border bg-card/60 backdrop-blur-md px-6 sticky top-0 z-30">
         <div className="flex items-center gap-2">
