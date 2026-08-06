@@ -4,7 +4,8 @@ import * as z from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Eye, EyeOff } from 'lucide-react';
+import { useState } from 'react';
 
 interface EmployeeFormProps {
   defaultValues?: {
@@ -17,6 +18,8 @@ interface EmployeeFormProps {
 }
 
 export function EmployeeForm({ defaultValues, onSubmit, isSubmitting, isEditMode = false }: EmployeeFormProps) {
+  const [showPassword, setShowPassword] = useState(false);
+
   const schema = z.object({
     email: z.string().email('Invalid email address'),
     fullName: z.string().min(2, 'Name must be at least 2 characters'),
@@ -70,13 +73,24 @@ export function EmployeeForm({ defaultValues, onSubmit, isSubmitting, isEditMode
       {!isEditMode && (
         <div className="space-y-2">
           <Label htmlFor="password">Password</Label>
-          <Input
-            id="password"
-            type="password"
-            placeholder="••••••••"
-            {...register('password')}
-            disabled={isSubmitting}
-          />
+          <div className="relative">
+            <Input
+              id="password"
+              type={showPassword ? 'text' : 'password'}
+              placeholder="••••••••"
+              {...register('password')}
+              disabled={isSubmitting}
+              className="pr-10"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+              tabIndex={-1}
+            >
+              {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </button>
+          </div>
           {errors.password && (
             <p className="text-xs text-destructive">{errors.password.message as string}</p>
           )}

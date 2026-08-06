@@ -15,14 +15,34 @@ export async function getEmployees(): Promise<Profile[]> {
 }
 
 export async function createEmployee(email: string, pass: string, name: string) {
-  const { data, error } = await (supabase as any).rpc('admin_create_employee', {
+  // Save current admin session before creating the new user
+  const { data: { session: adminSession } } = await supabase.auth.getSession();
+
+  // Create user in auth.users via Supabase Auth — this triggers the
+  // handle_new_user() database trigger which auto-creates the profile row
+  const { data, error } = await supabase.auth.signUp({
     email,
     password: pass,
-    full_name: name,
+    options: {
+      data: {
+        full_name: name,
+        role: 'employee',
+      },
+    },
   });
 
   if (error) throw error;
-  return data;
+  if (!data.user) throw new Error('Failed to create employee account');
+
+  // Supabase signUp auto-logs in as the new user — restore admin session
+  if (adminSession) {
+    await supabase.auth.setSession({
+      access_token: adminSession.access_token,
+      refresh_token: adminSession.refresh_token,
+    });
+  }
+
+  return data.user;
 }
 
 export async function updateEmployee(id: string, updates: Partial<Profile>) {
