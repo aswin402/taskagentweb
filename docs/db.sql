@@ -71,6 +71,72 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
+-- Enable pgcrypto extension for password hashing
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
+-- RPC to create an employee directly inside auth.users (auto-confirming email)
+CREATE OR REPLACE FUNCTION public.admin_create_employee(
+  email TEXT,
+  password TEXT,
+  full_name TEXT
+)
+RETURNS UUID AS $$
+DECLARE
+  new_user_id UUID;
+  encrypted_pw TEXT;
+BEGIN
+  -- Verify calling user is active admin
+  IF NOT EXISTS (
+    SELECT 1 FROM public.profiles
+    WHERE id = auth.uid() AND role = 'admin' AND is_active = true
+  ) THEN
+    RAISE EXCEPTION 'Access Denied: Only active admins can create employees.';
+  END IF;
+
+  -- Hash the password using blowfish (standard for Supabase Auth)
+  encrypted_pw := crypt(password, gen_salt('bf'));
+
+  -- Insert user directly into auth.users (and set email_confirmed_at to now() to bypass confirmation email)
+  INSERT INTO auth.users (
+    instance_id,
+    id,
+    aud,
+    role,
+    email,
+    encrypted_password,
+    email_confirmed_at,
+    raw_app_meta_data,
+    raw_user_meta_data,
+    created_at,
+    updated_at,
+    confirmation_token,
+    email_change,
+    email_change_sent_at,
+    last_sign_in_at
+  )
+  VALUES (
+    '00000000-0000-0000-0000-000000000000',
+    gen_random_uuid(),
+    'authenticated',
+    'authenticated',
+    email,
+    encrypted_pw,
+    now(),
+    '{"provider": "email", "providers": ["email"]}',
+    jsonb_build_object('full_name', full_name, 'role', 'employee'),
+    now(),
+    now(),
+    '',
+    '',
+    now(),
+    now()
+  )
+  RETURNING id INTO new_user_id;
+
+  RETURN new_user_id;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
 -- 5. Row Level Security Policies
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.tasks ENABLE ROW LEVEL SECURITY;
