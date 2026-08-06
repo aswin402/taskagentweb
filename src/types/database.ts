@@ -235,7 +235,7 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-      admin_create_employee: {
+      admin_create_employee_v2: {
         Args: {
           email: string
           password: string

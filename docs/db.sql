@@ -75,7 +75,7 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
 -- RPC to create an employee directly inside auth.users (auto-confirming email)
-CREATE OR REPLACE FUNCTION public.admin_create_employee(
+CREATE OR REPLACE FUNCTION public.admin_create_employee_v2(
   email TEXT,
   password TEXT,
   full_name TEXT

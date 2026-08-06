@@ -16,7 +16,7 @@ export async function getEmployees(): Promise<Profile[]> {
 
 export async function createEmployee(email: string, pass: string, name: string) {
   try {
-    const { data, error } = await (supabase as any).rpc('admin_create_employee', {
+    const { data, error } = await (supabase as any).rpc('admin_create_employee_v2', {
       email,
       password: pass,
       full_name: name,
