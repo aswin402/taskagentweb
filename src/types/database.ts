@@ -65,6 +65,8 @@ export interface Database {
           created_by: string
           created_at: string
           updated_at: string
+          target_quantity: number | null
+          unit: string
         }
         Insert: {
           id?: string
@@ -81,6 +83,8 @@ export interface Database {
           created_by: string
           created_at?: string
           updated_at?: string
+          target_quantity?: number | null
+          unit?: string
         }
         Update: {
           id?: string
@@ -97,6 +101,8 @@ export interface Database {
           created_by?: string
           created_at?: string
           updated_at?: string
+          target_quantity?: number | null
+          unit?: string
         }
         Relationships: [
           {
@@ -122,6 +128,7 @@ export interface Database {
           is_completed: boolean
           reason: string | null
           submitted_at: string
+          completed_quantity: number
         }
         Insert: {
           id?: string
@@ -131,6 +138,7 @@ export interface Database {
           is_completed: boolean
           reason?: string | null
           submitted_at?: string
+          completed_quantity?: number
         }
         Update: {
           id?: string
@@ -140,6 +148,7 @@ export interface Database {
           is_completed?: boolean
           reason?: string | null
           submitted_at?: string
+          completed_quantity?: number
         }
         Relationships: [
           {

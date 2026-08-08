@@ -25,6 +25,11 @@ const schema = z.object({
   is_recurring: z.boolean().default(false),
   recurrence_pattern: z.string().optional().nullable(),
   status: z.string().default(TASK_STATUSES.ACTIVE),
+  target_quantity: z.preprocess(
+    (val) => (val === '' || val === null || val === undefined ? null : Number(val)),
+    z.number().min(0, 'Quantity cannot be negative').nullable().optional()
+  ),
+  unit: z.string().default('units'),
 });
 
 interface TaskFormProps {
@@ -54,6 +59,8 @@ export function TaskForm({ employees, defaultValues, onSubmit, isSubmitting }: T
       is_recurring: defaultValues?.is_recurring || false,
       recurrence_pattern: defaultValues?.recurrence_pattern || 'daily',
       status: defaultValues?.status || TASK_STATUSES.ACTIVE,
+      target_quantity: defaultValues?.target_quantity || '',
+      unit: defaultValues?.unit || 'units',
     },
   });
 
@@ -81,6 +88,8 @@ export function TaskForm({ employees, defaultValues, onSubmit, isSubmitting }: T
       priority: data.priority,
       assigned_to: data.assigned_to === 'all' || !data.assigned_to ? null : data.assigned_to,
       status: data.status,
+      target_quantity: data.target_quantity || null,
+      unit: data.unit || 'units',
     };
 
     if (data.category === TASK_CATEGORIES.SCHEDULED) {
@@ -237,6 +246,34 @@ export function TaskForm({ employees, defaultValues, onSubmit, isSubmitting }: T
           )}
         </>
       )}
+
+      <div className="grid grid-cols-2 gap-4 border-t pt-4 border-border/50">
+        <div className="space-y-2">
+          <Label htmlFor="target_quantity">Target Quantity (Optional)</Label>
+          <Input
+            id="target_quantity"
+            type="number"
+            placeholder="e.g. 50 (leave blank for standard task)"
+            {...register('target_quantity')}
+            disabled={isSubmitting}
+          />
+          {errors.target_quantity && (
+            <p className="text-xs text-destructive">{errors.target_quantity.message as string}</p>
+          )}
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="unit">Unit (Optional)</Label>
+          <Input
+            id="unit"
+            placeholder="e.g. tweets, calls, leads"
+            {...register('unit')}
+            disabled={isSubmitting}
+          />
+          {errors.unit && (
+            <p className="text-xs text-destructive">{errors.unit.message as string}</p>
+          )}
+        </div>
+      </div>
 
       <Button type="submit" className="w-full mt-2" disabled={isSubmitting}>
         {isSubmitting ? (

@@ -102,6 +102,11 @@ export function TaskCard({ task, onEdit, onDelete }: TaskCardProps) {
               <span>Recurring ({task.recurrence_pattern})</span>
             </div>
           )}
+          {(task as any).target_quantity && (task as any).target_quantity > 0 && (
+            <div className="flex items-center gap-2 font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 w-fit px-2 py-0.5 rounded text-[10px]">
+              <span>Target: {(task as any).target_quantity} {(task as any).unit || 'units'}</span>
+            </div>
+          )}
         </div>
       </CardContent>
 

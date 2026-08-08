@@ -8,15 +8,36 @@ interface ChecklistItemProps {
   task: Task;
   isCompleted: boolean;
   reason: string | null;
+  completedQuantity?: number;
   onToggle: (checked: boolean) => void;
+  onQuantityChange?: (quantity: number) => void;
   onEditReason: () => void;
 }
 
-export function ChecklistItem({ task, isCompleted, reason, onToggle, onEditReason }: ChecklistItemProps) {
+export function ChecklistItem({
+  task,
+  isCompleted,
+  reason,
+  completedQuantity = 0,
+  onToggle,
+  onQuantityChange,
+  onEditReason,
+}: ChecklistItemProps) {
   const formatTime = (dateTimeStr: string | null) => {
     if (!dateTimeStr) return '';
     const date = new Date(dateTimeStr);
     return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+  };
+
+  const targetQty = (task as any).target_quantity;
+  const unit = (task as any).unit || 'units';
+
+  const handleCheckboxChange = (checked: boolean) => {
+    if (targetQty && targetQty > 0 && onQuantityChange) {
+      onQuantityChange(checked ? targetQty : 0);
+    } else {
+      onToggle(checked);
+    }
   };
 
   return (
@@ -28,7 +49,7 @@ export function ChecklistItem({ task, isCompleted, reason, onToggle, onEditReaso
           <Checkbox
             id={`chk-${task.id}`}
             checked={isCompleted}
-            onCheckedChange={(checked) => onToggle(!!checked)}
+            onCheckedChange={(checked) => handleCheckboxChange(!!checked)}
             className="h-5 w-5 rounded-md"
           />
         </div>
@@ -45,6 +66,55 @@ export function ChecklistItem({ task, isCompleted, reason, onToggle, onEditReaso
             <p className={`text-xs text-muted-foreground leading-normal ${isCompleted ? 'text-muted-foreground/60' : ''}`}>
               {task.description}
             </p>
+          )}
+
+          {/* Numeric Quantity Progress Section */}
+          {targetQty && targetQty > 0 && onQuantityChange && (
+            <div className="mt-2.5 flex items-center gap-3 bg-muted/50 border border-border/50 px-3 py-1.5 rounded-lg w-fit">
+              <span className="text-xs text-muted-foreground">Progress:</span>
+              <div className="flex items-center gap-1.5">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-6 w-6 rounded-md text-xs font-bold"
+                  onClick={() => onQuantityChange(Math.max(0, completedQuantity - 1))}
+                  disabled={completedQuantity <= 0}
+                  type="button"
+                >
+                  -
+                </Button>
+                <input
+                  type="number"
+                  value={completedQuantity}
+                  onChange={(e) => {
+                    const val = Math.max(0, parseInt(e.target.value) || 0);
+                    onQuantityChange(val);
+                  }}
+                  className="w-12 h-6 text-center text-xs bg-background border rounded-md focus-visible:ring-primary"
+                />
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-6 w-6 rounded-md text-xs font-bold"
+                  onClick={() => onQuantityChange(completedQuantity + 1)}
+                  type="button"
+                >
+                  +
+                </Button>
+              </div>
+              <span className="text-xs font-semibold text-foreground">
+                / {targetQty} {unit}
+              </span>
+              {completedQuantity < targetQty ? (
+                <span className="text-[10px] text-amber-600 bg-amber-500/10 px-1.5 py-0.5 rounded font-medium dark:text-amber-400">
+                  {targetQty - completedQuantity} remaining
+                </span>
+              ) : (
+                <span className="text-[10px] text-emerald-600 bg-emerald-500/10 px-1.5 py-0.5 rounded font-medium dark:text-emerald-400">
+                  Target met!
+                </span>
+              )}
+            </div>
           )}
 
           <div className="flex flex-wrap items-center gap-2 mt-1">

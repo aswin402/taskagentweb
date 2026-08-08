@@ -28,6 +28,8 @@ CREATE TABLE public.tasks (
     due_date DATE,
     is_recurring BOOLEAN NOT NULL DEFAULT false,
     recurrence_pattern TEXT,
+    target_quantity INTEGER DEFAULT NULL,
+    unit TEXT DEFAULT 'units',
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
@@ -40,6 +42,7 @@ CREATE TABLE public.task_submissions (
     submission_date DATE NOT NULL DEFAULT CURRENT_DATE,
     is_completed BOOLEAN NOT NULL,
     reason TEXT,
+    completed_quantity INTEGER DEFAULT 0,
     submitted_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
     UNIQUE (task_id, employee_id, submission_date)
 );

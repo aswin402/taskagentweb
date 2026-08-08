@@ -57,13 +57,14 @@ export function ReportsPage() {
 
   const handleExportCSV = () => {
     if (filteredSubmissions.length === 0) return;
-    const headers = ['Date', 'Employee', 'Task Title', 'Category', 'Completed', 'Reason', 'Submitted At'];
+    const headers = ['Date', 'Employee', 'Task Title', 'Category', 'Completed', 'Progress', 'Reason', 'Submitted At'];
     const rows = filteredSubmissions.map((sub: any) => [
       sub.submission_date,
       sub.employee?.full_name,
       sub.task?.title,
       sub.task?.category,
       sub.is_completed ? 'YES' : 'NO',
+      sub.task?.target_quantity ? `${sub.completed_quantity || 0} / ${sub.task.target_quantity} ${sub.task.unit || 'units'}` : (sub.is_completed ? '1 / 1' : '0 / 1'),
       sub.reason || '',
       sub.submitted_at,
     ]);
@@ -209,15 +210,22 @@ export function ReportsPage() {
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      {sub.is_completed ? (
-                        <Badge variant="outline" className="bg-emerald-500/10 text-emerald-600 border-emerald-500/20 dark:text-emerald-400">
-                          Completed
-                        </Badge>
-                      ) : (
-                        <Badge variant="outline" className="bg-rose-500/10 text-rose-600 border-rose-500/20 dark:text-rose-400">
-                          Incomplete
-                        </Badge>
-                      )}
+                      <div className="flex flex-col gap-1">
+                        {sub.is_completed ? (
+                          <Badge variant="outline" className="bg-emerald-500/10 text-emerald-600 border-emerald-500/20 dark:text-emerald-400 w-fit">
+                            Completed
+                          </Badge>
+                        ) : (
+                          <Badge variant="outline" className="bg-rose-500/10 text-rose-600 border-rose-500/20 dark:text-rose-400 w-fit">
+                            Incomplete
+                          </Badge>
+                        )}
+                        {sub.task?.target_quantity && sub.task.target_quantity > 0 && (
+                          <span className="text-[10px] text-muted-foreground font-medium pl-1">
+                            {sub.completed_quantity || 0} / {sub.task.target_quantity} {sub.task.unit || 'units'}
+                          </span>
+                        )}
+                      </div>
                     </TableCell>
                     <TableCell className="pr-6 italic text-muted-foreground max-w-[250px] truncate">
                       {sub.is_completed ? '-' : sub.reason || 'No justification given'}
