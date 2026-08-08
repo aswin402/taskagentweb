@@ -1,6 +1,6 @@
 import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
-import { Clock, Edit, AlertCircle } from 'lucide-react';
+import { Clock, Edit, AlertCircle, Plus, Minus } from 'lucide-react';
 import type { Task } from '@/api/tasks';
 import { TASK_CATEGORIES } from '@/lib/constants';
 
@@ -70,19 +70,21 @@ export function ChecklistItem({
 
           {/* Numeric Quantity Progress Section */}
           {targetQty && targetQty > 0 && onQuantityChange && (
-            <div className="mt-2.5 flex items-center gap-3 bg-muted/50 border border-border/50 px-3 py-1.5 rounded-lg w-fit">
+            <div className="mt-2.5 flex items-center gap-3 bg-muted/30 border border-border/40 px-3 py-1.5 rounded-lg w-fit shadow-inner">
               <span className="text-xs text-muted-foreground">Progress:</span>
-              <div className="flex items-center gap-1.5">
+              
+              <div className="flex items-center border border-input bg-background/50 rounded-lg p-0.5 shadow-sm">
                 <Button
-                  variant="outline"
+                  variant="ghost"
                   size="icon"
-                  className="h-6 w-6 rounded-md text-xs font-bold"
+                  className="h-7 w-7 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/80 active:scale-95 transition-all"
                   onClick={() => onQuantityChange(Math.max(0, completedQuantity - 1))}
                   disabled={completedQuantity <= 0}
                   type="button"
                 >
-                  -
+                  <Minus className="h-3.5 w-3.5" />
                 </Button>
+                
                 <input
                   type="number"
                   value={completedQuantity}
@@ -90,16 +92,17 @@ export function ChecklistItem({
                     const val = Math.max(0, parseInt(e.target.value) || 0);
                     onQuantityChange(val);
                   }}
-                  className="w-12 h-6 text-center text-xs bg-background border rounded-md focus-visible:ring-primary"
+                  className="w-12 text-center text-sm font-semibold bg-transparent border-0 focus-visible:ring-0 focus:outline-none p-0 select-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                 />
+                
                 <Button
-                  variant="outline"
+                  variant="ghost"
                   size="icon"
-                  className="h-6 w-6 rounded-md text-xs font-bold"
+                  className="h-7 w-7 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/80 active:scale-95 transition-all"
                   onClick={() => onQuantityChange(completedQuantity + 1)}
                   type="button"
                 >
-                  +
+                  <Plus className="h-3.5 w-3.5" />
                 </Button>
               </div>
               <span className="text-xs font-semibold text-foreground">
